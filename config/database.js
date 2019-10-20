@@ -2,7 +2,7 @@ const MySQL = require('mysql');
 
 const DATABASE = 'shoehello';
 
-const ADDRESS_TABLE_SQL = `CREATE TABLE IF NOT EXISTS address (
+const ADDRESS_TABLE_SQL = `CREATE TABLE IF NOT EXISTS addresses (
   id    INT UNSIGNED NOT NULL AUTO_INCREMENT,
   commune NVARCHAR(50) NOT NULL,
   district NVARCHAR(50) NOT NULL, 
@@ -19,9 +19,11 @@ const USER_TABLE_SQL = `CREATE TABLE IF NOT EXISTS users (
   phone     VARCHAR(15) NOT NULL,
   avatar    VARCHAR(250),
   role   ENUM('admin', 'user') NOT NULL,
-  address_id INT UNSIGNED NOT NULL,
-  PRIMARY KEY (id),
-  FOREIGN KEY(address_id) REFERENCES address(id)
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+
+  PRIMARY KEY (id)
+
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;`
 
 const SHOE_IMAGE_TABLE_SQL = `CREATE TABLE IF NOT EXISTS images (
@@ -32,11 +34,18 @@ const SHOE_IMAGE_TABLE_SQL = `CREATE TABLE IF NOT EXISTS images (
   FOREIGN KEY(shoe_id) REFERENCES shoes(id)
 );`
 
-const PRODUCER_TABLE_SQL = `CREATE TABLE IF NOT EXISTS producers (
+const CATEGORY_TABLE_SQL = `CREATE TABLE IF NOT EXISTS categories (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   name VARCHAR(100) NOT NULL,
   PRIMARY KEY(id)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;`
+
+const COLOR_TABLE_SQL = `CREATE TABLE IF NOT EXISTS colors (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL,
+  PRIMARY KEY(id)
+) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;`
+
 
 const SIZE_TABLE_SQL = `CREATE TABLE IF NOT EXISTS sizes (
   id    INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -49,30 +58,47 @@ const SHOE_TABLE_SQL = `CREATE TABLE IF NOT EXISTS shoes (
   name  VARCHAR(250) NOT NULL UNIQUE,
   description TEXT,
   price DOUBLE NOT NULL,
-  producer_id INT UNSIGNED,
+  discount INT,
+  category_id INT UNSIGNED,
   size_id INT UNSIGNED,
+  color_id INT UNSIGNED,
+  status ENUM('in_stock', 'out_of_stock'),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+
   PRIMARY KEY(id),
-  FOREIGN KEY(producer_id) REFERENCES producers(id),
-  FOREIGN KEY(size_id) REFERENCES sizes(id)
+  FOREIGN KEY(category_id) REFERENCES categories(id),
+  FOREIGN KEY(size_id) REFERENCES sizes(id),
+  FOREIGN KEY(color_id) REFERENCES colors(id)
+
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;`
  
 
-const INVOICE_TABLE_SQL = `CREATE TABLE IF NOT EXISTS invoices (
-  id    INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  cost  DOUBLE NOT NULL,
-  user_id INT UNSIGNED NOT NULL,
-  status  ENUM('draff', 'fulfill') NOT NULL,
+const INVOICE_TABLE_SQL = `CREATE TABLE IF NOT EXISTS bills (
+  id          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id     INT UNSIGNED NOT NULL,
+  address_id  INT UNSIGNED,
+  status      ENUM('draff', 'fulfill') NOT NULL,
+  updated_at  TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
+  created_at  TIMESTAMP NOT NULL DEFAULT NOW(),
+
   PRIMARY KEY (id),
-  FOREIGN KEY(user_id) REFERENCES users(id)
+  FOREIGN KEY(user_id) REFERENCES users(id),
+  FOREIGN KEY(address_id) REFERENCES addresses(id)
+
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;`
 
-const INVOICE_AND_SHOE_TABLE_SQL = `CREATE TABLE IF NOT EXISTS shoes_invoice (
+const INVOICE_AND_SHOE_TABLE_SQL = `CREATE TABLE IF NOT EXISTS billdetails (
   id          INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  invoice_id  INT UNSIGNED NOT NULL,
+  bill_id     INT UNSIGNED NOT NULL,
   shoe_id     INT UNSIGNED NOT NULL,
+  amount      INT UNSIGNED NOT NULL,
+  price       DOUBLE NOT NULL,
+
   PRIMARY KEY (id),
-  FOREIGN KEY(invoice_id) REFERENCES invoices(id),
+  FOREIGN KEY(bill_id) REFERENCES bills(id),
   FOREIGN KEY(shoe_id) REFERENCES shoes(id)
+
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;`
 
 const COMMENT_TABLE_SQL = `CREATE TABLE IF NOT EXISTS comments (
@@ -80,9 +106,14 @@ const COMMENT_TABLE_SQL = `CREATE TABLE IF NOT EXISTS comments (
   shoe_id INT UNSIGNED NOT NULL,
   user_id INT UNSIGNED NOT NULL,
   content TEXT,
+  status  ENUM('active', 'in_active') NOT NULL,
+  updated_at  TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
+  created_at  TIMESTAMP NOT NULL DEFAULT NOW(),
+
   PRIMARY KEY (id),
   FOREIGN KEY(user_id) REFERENCES users(id),
   FOREIGN KEY(shoe_id) REFERENCES shoes(id)
+
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;`
 
 const connection = MySQL.createConnection({
@@ -106,7 +137,8 @@ connection.connect(function(err) {
       connection.query(ADDRESS_TABLE_SQL, function(err){ if(err) throw err });
       connection.query(USER_TABLE_SQL, function(err){ if(err) throw err });
       connection.query(SIZE_TABLE_SQL, function(err){ if(err) throw err });
-      connection.query(PRODUCER_TABLE_SQL, function(err){ if(err) throw err });
+      connection.query(CATEGORY_TABLE_SQL, function(err){ if(err) throw err });
+      connection.query(COLOR_TABLE_SQL, function(err){ if(err) throw err });
       connection.query(SHOE_TABLE_SQL, function(err){ if(err) throw err });
       connection.query(INVOICE_TABLE_SQL, function(err){ if(err) throw err });
       connection.query(INVOICE_AND_SHOE_TABLE_SQL, function(err){ if(err) throw err });
