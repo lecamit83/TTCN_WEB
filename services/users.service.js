@@ -1,0 +1,27 @@
+const { UserDAO } = require('../models');
+
+const getUsers = async () => {
+  // Validation
+  try {
+    // DB
+    const results = await UserDAO.findById({});
+    return results;
+  } catch (error) {
+    throw error;
+  }
+}
+
+const createUser = async (body) => {
+  try {
+    const result = await UserDAO.create(body);
+    return result;
+  } catch (error) {
+    throw error;
+  }
+}
+
+module.exports = {
+  getUsers,
+  createUser,
+
+}
