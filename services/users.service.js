@@ -4,7 +4,7 @@ const getUsers = async () => {
   // Validation
   try {
     // DB
-    const results = await UserDAO.findById({});
+    const results = await UserDAO.find({}).where('role').equals('user');
     return results;
   } catch (error) {
     throw error;
