@@ -10,7 +10,7 @@ const getUsers = async (req, res) => {
 }
 
 const createUser = async (req, res) => {
-  const { email, password, last_name, first_name, phone } = req.body;
+  const { email, password, last_name, first_name, phone, role } = req.body;
   try {
     const result = await UserService.createUser({
       email: email,
@@ -18,7 +18,7 @@ const createUser = async (req, res) => {
       last_name: last_name,
       first_name: first_name,
       phone: phone,
-      role: 'user',
+      role: role || 'user',
     });
     res.send(result);
   } catch (error) {
