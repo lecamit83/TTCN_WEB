@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const { ColorController } = require('../controllers');
-
+const { AuthMiddleWare } = require('../middlewares');
 router.route('/')
   .get(ColorController.getAll)
-  .post(ColorController.create)
+  .post(AuthMiddleWare.isAdmin, ColorController.create)
   .put()
   .delete();
 

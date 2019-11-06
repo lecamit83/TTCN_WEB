@@ -2,8 +2,9 @@ const { UserDAO } = require('../models');
 
 const login = async (username, password) => {
   try {
-    const result = await UserDAO.findByCredentials(username, password);
-    return result;
+    const user = await UserDAO.findByCredentials(username, password);
+    const token = await user.generateToken();
+    return { token, user };
   } catch (error) {
     throw error;
   }

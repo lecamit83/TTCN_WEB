@@ -12,7 +12,16 @@ const create = async (req, res) => {
 const getAll = async (req, res) => {
   try {
     const results = await ShoeService.getAll();
-    res.status(201).json(results);
+    res.status(200).json(results);
+  } catch (error) {
+    res.status(404).json(error);
+  }
+}
+const getOne = async (req, res) => {
+  const { shoeId } = req.params;
+  try {
+    const result = await ShoeService.getOne(shoeId);
+    res.status(200).json(result);
   } catch (error) {
     res.status(404).json(error);
   }
@@ -20,5 +29,6 @@ const getAll = async (req, res) => {
 
 module.exports = {
   create,
-  getAll
+  getAll,
+  getOne,
 }

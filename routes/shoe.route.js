@@ -7,4 +7,9 @@ router.route('/')
   .get(ShoeController.getAll)
   .post(ShoeController.create)
 
+router.route('/:shoeId')
+  .get(ShoeController.getOne)
+  .put()
+  .delete();
+
 module.exports = router;

@@ -22,8 +22,16 @@ const shoeSchema = new Schema({
   timestamps: true,
 });
 
-shoeSchema.statics.findAll = function () {
-  return this.find({})
+shoeSchema.statics.findShoe = function (query) {
+  return this.find(query)
+    .populate({ path: 'category' })
+    .populate({ path: 'size' })
+    .populate({ path: 'color' })
+    .exec();
+}
+
+shoeSchema.statics.findShoeById = function (id) {
+  return ShoeModel.findById(id)
     .populate({ path: 'category' })
     .populate({ path: 'size' })
     .populate({ path: 'color' })
