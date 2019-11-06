@@ -20,6 +20,9 @@ const createUser = async (body) => {
   }
 }
 
+const getUser = async () => {
+  
+}
 module.exports = {
   getUsers,
   createUser,

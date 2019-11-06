@@ -9,6 +9,14 @@ const getUsers = async (req, res) => {
   }
 }
 
+const getUser = async (req, res) => {
+  try {
+    const result = await UserService.getUser();
+  } catch (error) {
+    res.status(404).send(error);
+  }
+}
+
 const createUser = async (req, res) => {
   const { email, password, last_name, first_name, phone, role } = req.body;
   try {
@@ -24,8 +32,9 @@ const createUser = async (req, res) => {
   } catch (error) {
     res.status(404).json(error);
   }
-
 }
+
+
 
 module.exports = {
   getUsers,
