@@ -9,5 +9,12 @@ const colorSchema = new Schema({
   }
 });
 
+colorSchema.methods.toJSON = function () {
+  const object = this;
+  const objectJSON = object.toObject();
+  delete objectJSON.__v;
+  return objectJSON;
+}
+
 const ColorModel = mongoose.model('Colors', colorSchema);
 module.exports = ColorModel;

@@ -4,7 +4,7 @@ const router = express.Router();
 const { ShoeController } = require('../controllers');
 
 router.route('/')
-  .get()
+  .get(ShoeController.getAll)
   .post(ShoeController.create)
 
 module.exports = router;

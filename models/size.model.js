@@ -8,5 +8,12 @@ const sizeSchema = new Schema({
   }
 });
 
+sizeSchema.methods.toJSON = function () {
+  const object = this;
+  const objectJSON = object.toObject();
+  delete objectJSON.__v;
+  return objectJSON;
+}
+
 const SizeModel = mongoose.model('Sizes', sizeSchema);
 module.exports = SizeModel;

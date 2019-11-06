@@ -9,6 +9,16 @@ const create = async (req, res) => {
   }
 }
 
+const getAll = async (req, res) => {
+  try {
+    const results = await ShoeService.getAll();
+    res.status(201).json(results);
+  } catch (error) {
+    res.status(404).json(error);
+  }
+}
+
 module.exports = {
   create,
+  getAll
 }
