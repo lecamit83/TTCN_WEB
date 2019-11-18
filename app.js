@@ -3,7 +3,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const swaggerUI = require('swagger-ui-express');
-// const swaggerDocument = require('./docs.json');
+const swaggerDocument = require('./docs.json');
 require('dotenv/config');
 
 const db = require('./config/mongoDb');
@@ -21,6 +21,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api', indexRouter);
-// app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 module.exports = app;
