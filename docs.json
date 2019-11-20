@@ -12,8 +12,8 @@
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   },
-  "host": "localhost:3008",
-  "basePath": "/api",
+  "host": "webttcn.herokuapp.com",
+  "basePath": "/v1",
   "tags": [
     {
       "name": "auth",
@@ -29,8 +29,7 @@
     }
   ],
   "schemes": [
-    "https",
-    "http"
+    "https"
   ],
   "paths": {
     "/shoes": {
