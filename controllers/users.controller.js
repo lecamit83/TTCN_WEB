@@ -34,9 +34,19 @@ const createUser = async (req, res) => {
   }
 }
 
+const uploadAvatar = async (req, res) => {
+  const { user, file } = req;
+  try {
+    const result = await UserService.uploadAvatar(user, file.path);
+    res.send(result);
+  } catch (error) {
+    res.status(404).json(error);
+  }
+}
 
 
 module.exports = {
   getUsers,
   createUser,
+  uploadAvatar,
 }
