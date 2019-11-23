@@ -17,10 +17,10 @@ const fileFilter = (req, file, cb) => {
   return cb(null, (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg'));
 }
 const uploads = multer({
-  storage : storage,
-  fileFilter : fileFilter,
-  limits : {
-    fileSize : 1024 * 1024 * 3
+  storage: storage,
+  fileFilter: fileFilter,
+  limits: {
+    fileSize: 1024 * 1024 * 3
   }
 })
 
@@ -28,6 +28,14 @@ const uploads = multer({
 router.route('/')
   .get(UserController.getUsers)
   .post(UserController.createUser);
+
+router.route('/me')
+  .get(AuthMiddleWare.isAuth, UserController.getCurrentUser);
+
+
+router.route('/:id')
+  .get(AuthMiddleWare.isAdmin, UserController.getUser);
+
 router.route('/me/avatar')
   .put(AuthMiddleWare.isAuth, uploads.single('avatar'), UserController.uploadAvatar)
 

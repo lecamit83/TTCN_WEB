@@ -11,8 +11,9 @@ const createUser = async (body) => {
   return result;
 }
 
-const getUser = async () => {
-
+const getUser = async (id) => {
+  const result = await UserDAO.findById(id);
+  return result;
 }
 
 async function uploadAvatar(user, path) {
@@ -25,4 +26,5 @@ module.exports = {
   getUsers,
   createUser,
   uploadAvatar,
+  getUser,
 }
