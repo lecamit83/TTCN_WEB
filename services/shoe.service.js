@@ -10,8 +10,14 @@ const getOne = (shoeId) => {
   return ShoeDAO.findShoeById(shoeId)
 }
 
+const uploadImages = (files) => {
+  console.log(files);
+  return [];
+}
+
 module.exports = {
   create,
   getAll,
   getOne,
+  uploadImages,
 }

@@ -1,4 +1,6 @@
 const { UserDAO } = require('../models');
+const SALT_ROUND = 10;
+const bcrypt = require('bcrypt');
 
 const getUsers = async () => {
   // Validation
@@ -22,9 +24,23 @@ async function uploadAvatar(user, path) {
   return user;
 }
 
+const updateCurrentUser = async (user, last, first, pass, phone) => {
+  if (!!last) user.last_name = last;
+  if (!!first) user.first_name = first;
+  if (!!pass) {
+    user.password = await bcrypt.hash(pass, SALT_ROUND);
+  }
+  if (!!phone) user.phone = phone;
+  await UserDAO.updateOne({ _id: user._id }, user);
+
+  return user;
+}
+
 module.exports = {
   getUsers,
   createUser,
   uploadAvatar,
   getUser,
+  updateCurrentUser,
+
 }

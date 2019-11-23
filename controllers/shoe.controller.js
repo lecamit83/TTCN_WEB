@@ -27,8 +27,20 @@ const getOne = async (req, res) => {
   }
 }
 
+const uploadImages = (req, res) => {
+  const { files } = req;
+  try {
+    const results = ShoeService.uploadImages(files);
+    res.status(201).json(results);
+  } catch (error) {
+    res.status(404).json(error);
+  }
+}
+
 module.exports = {
   create,
   getAll,
   getOne,
+  uploadImages,
+
 }

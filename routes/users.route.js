@@ -30,13 +30,13 @@ router.route('/')
   .post(UserController.createUser);
 
 router.route('/me')
-  .get(AuthMiddleWare.isAuth, UserController.getCurrentUser);
-
-
-router.route('/:id')
-  .get(AuthMiddleWare.isAdmin, UserController.getUser);
+  .get(AuthMiddleWare.isAuth, UserController.getCurrentUser)
+  .put(AuthMiddleWare.isAuth, UserController.updateCurrentUser)
 
 router.route('/me/avatar')
   .put(AuthMiddleWare.isAuth, uploads.single('avatar'), UserController.uploadAvatar)
+
+router.route('/:id')
+  .get(AuthMiddleWare.isAdmin, UserController.getUser);
 
 module.exports = router;

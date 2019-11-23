@@ -55,10 +55,28 @@ const getCurrentUser = (req, res) => {
   }
 }
 
+const updateCurrentUser = async (req, res) => {
+  const { user } = req;
+  const last_name = req.body.last_name,
+    first_name = req.body.first_name,
+    phone = req.body.phone,
+    password = req.body.password;
+
+  try {
+    const result = await UserService.updateCurrentUser(user, last_name, first_name, password, phone);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(404).json(error);
+  }
+}
+
 module.exports = {
   getUsers,
   createUser,
   uploadAvatar,
   getUser,
   getCurrentUser,
+  updateCurrentUser,
+
 }
+
