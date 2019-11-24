@@ -19,6 +19,7 @@ const shoeSchema = new Schema({
     type: Number,
     required: true,
   },
+  images: [String],
   category: { type: Schema.Types.ObjectId, ref: 'Categories' },
   size: [{ type: Schema.Types.ObjectId, ref: 'Sizes' }],
   color: [{ type: Schema.Types.ObjectId, ref: 'Colors' }],

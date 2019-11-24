@@ -28,7 +28,7 @@ const uploads = multer({
 
 router.route('/')
   .get(ShoeController.getAll)
-  .post(ShoeController.create)
+  .post(AuthMiddleWare.isAdmin, ShoeController.create)
 
 router.post('/images', AuthMiddleWare.isAdmin, uploads.array('shoeImages'), ShoeController.uploadImages);
 

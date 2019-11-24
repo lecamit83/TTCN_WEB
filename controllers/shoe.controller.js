@@ -1,8 +1,8 @@
 const { ShoeService } = require('../services');
 const create = async (req, res) => {
-  const { name, price, category, desc, size, color, kind } = req.body;
+  const { name, price, category, desc, size, color, kind, images } = req.body;
   try {
-    const result = await ShoeService.create(name, price, desc, category, size, color, kind);
+    const result = await ShoeService.create(name, price, desc, category, size, color, kind, images);
     res.status(201).json(result);
   } catch (error) {
     res.status(404).json(error);
