@@ -1,9 +1,12 @@
+const slugify = require('slugify');
 const { ShoeDAO } = require('../models');
-const create = (name, price, desc, category, size, color) => {
-  return ShoeDAO.create({ name, price, desc, category, size, color });
+
+const create = (name, price, desc, category, size, color, kind) => {
+  const slug = slugify(name, { lower: true });
+  return ShoeDAO.create({ name, price, desc, category, size, color, kind, slug });
 }
-const getAll = () => {
-  return ShoeDAO.findShoe({});
+const getAll = ({ kind, q }) => {
+  return ShoeDAO.findShoe({ kind, q });
 }
 
 const getOne = (shoeId) => {

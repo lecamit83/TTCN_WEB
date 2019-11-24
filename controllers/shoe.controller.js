@@ -1,8 +1,8 @@
 const { ShoeService } = require('../services');
 const create = async (req, res) => {
-  const { name, price, category, desc, size, color } = req.body;
+  const { name, price, category, desc, size, color, kind } = req.body;
   try {
-    const result = await ShoeService.create(name, price, desc, category, size, color);
+    const result = await ShoeService.create(name, price, desc, category, size, color, kind);
     res.status(201).json(result);
   } catch (error) {
     res.status(404).json(error);
@@ -10,8 +10,10 @@ const create = async (req, res) => {
 }
 
 const getAll = async (req, res) => {
+  const kind = req.query.kind,
+    q = req.query.q;
   try {
-    const results = await ShoeService.getAll();
+    const results = await ShoeService.getAll({ kind, q });
     res.status(200).json(results);
   } catch (error) {
     res.status(404).json(error);

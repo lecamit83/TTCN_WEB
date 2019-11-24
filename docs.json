@@ -110,6 +110,52 @@
             "description": "Validation exception"
           }
         }
+      },
+      "get": {
+        "tags": [
+          "shoe"
+        ],
+        "summary": "Get all shoes in database",
+        "operationId": "getAll",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "kind",
+            "in": "query",
+            "description": "men or women",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "men",
+                "women"
+              ]
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "description": "search name",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Shoe"
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
       }
     },
     "/shoes/{shoeId}": {
