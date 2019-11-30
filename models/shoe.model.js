@@ -15,6 +15,10 @@ const shoeSchema = new Schema({
     type: Number,
     required: true,
   },
+  image: {
+    type: String,
+    required: true,
+  },
   category: { type: Schema.Types.ObjectId, ref: 'Categories' },
   size: [{ type: Schema.Types.ObjectId, ref: 'Sizes' }],
   color: [{ type: Schema.Types.ObjectId, ref: 'Colors' }],
@@ -28,6 +32,10 @@ shoeSchema.statics.findShoe = function (query) {
     .populate({ path: 'size' })
     .populate({ path: 'color' })
     .exec();
+}
+
+shoeSchema.statics.findShoeByCatId = function (catId) {
+  return ShoeModel.find({ category: catId });
 }
 
 shoeSchema.statics.findShoeById = function (id) {

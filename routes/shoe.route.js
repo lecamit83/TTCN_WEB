@@ -9,7 +9,6 @@ router.route('/')
 
 router.route('/:shoeId')
   .get(ShoeController.getOne)
-  .put()
-  .delete();
+  .put();
 
 module.exports = router;
