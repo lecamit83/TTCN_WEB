@@ -5,9 +5,9 @@ const updateOneById = async (req, res) => {
 }
 
 const create = async (req, res) => {
-  const { name, price, category, desc, size, color } = req.body;
+  const { name, price, category, desc, size, color, kind, images } = req.body;
   try {
-    const result = await ShoeService.create(name, price, desc, category, size, color);
+    const result = await ShoeService.create(name, price, desc, category, size, color, kind, images);
     res.status(201).json(result);
   } catch (error) {
     res.status(404).json(error);
@@ -15,8 +15,10 @@ const create = async (req, res) => {
 }
 
 const getAll = async (req, res) => {
+  const kind = req.query.kind,
+    q = req.query.q;
   try {
-    const results = await ShoeService.getAll();
+    const results = await ShoeService.getAll({ kind, q });
     res.status(200).json(results);
   } catch (error) {
     res.status(404).json(error);
@@ -32,9 +34,21 @@ const getOne = async (req, res) => {
   }
 }
 
+const uploadImages = (req, res) => {
+  const { files } = req;
+  try {
+    const results = ShoeService.uploadImages(files);
+    res.status(201).json(results);
+  } catch (error) {
+    res.status(404).json(error);
+  }
+}
+
 module.exports = {
   create,
   getAll,
   getOne,
-  updateOneById
+  updateOneById,
+  uploadImages,
+
 }

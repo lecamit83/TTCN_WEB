@@ -34,14 +34,13 @@ const userSchema = new Schema({
 userSchema.methods.toJSON = function () {
   const user = this;
   let obj = user.toObject();
-  delete obj.password;
   return obj;
 }
 
 
 userSchema.methods.generateToken = async function () {
   const user = this;
-  let token = await JWT.sign({ data : JSON.stringify(user)}, process.env.JWT_SECRET);
+  let token = await JWT.sign({ data: JSON.stringify(user) }, process.env.JWT_SECRET);
   return token;
 };
 
@@ -65,6 +64,11 @@ userSchema.pre('save', async function (next) {
   }
   next();
 });
+userSchema.pre('updateOne', async function (next) {
+  const user = this;
+  console.log(user)
+  next();
+})
 
 
 const UserModel = mongoose.model('Users', userSchema);

@@ -1,3 +1,4 @@
+const slugify = require('slugify');
 const { ShoeDAO } = require('../models');
 
 const validateData = (oldData, newData) => {
@@ -39,15 +40,20 @@ const getShoesByCatId = async (catId) => {
   }
 }
 
-const create = (name, price, desc, category, size, color) => {
-  return ShoeDAO.create({ name, price, desc, category, size, color });
+const create = (name, price, desc, category, size, color, kind, images) => {
+  const slug = slugify(name, { lower: true });
+  return ShoeDAO.create({ name, price, desc, category, size, color, kind, slug, images });
 }
-const getAll = () => {
-  return ShoeDAO.findShoe({});
+const getAll = ({ kind, q }) => {
+  return ShoeDAO.findShoe({ kind, q });
 }
 
 const getOne = (shoeId) => {
   return ShoeDAO.findShoeById(shoeId);
+}
+
+const uploadImages = (files) => {
+  return files.map(file => file.path);
 }
 
 module.exports = {
@@ -56,5 +62,6 @@ module.exports = {
   getOne,
   getShoesByCatId,
   updateOneById,
-  validateData
+  validateData,
+  uploadImages,
 }
