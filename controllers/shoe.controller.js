@@ -1,4 +1,9 @@
 const { ShoeService } = require('../services');
+
+const updateOneById = async (req, res) => {
+
+}
+
 const create = async (req, res) => {
   const { name, price, category, desc, size, color, kind, images } = req.body;
   try {
@@ -43,6 +48,7 @@ module.exports = {
   create,
   getAll,
   getOne,
+  updateOneById,
   uploadImages,
 
 }

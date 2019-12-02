@@ -42,6 +42,10 @@ shoeSchema.statics.findShoe = function ({ kind, q }) {
     .exec();
 }
 
+shoeSchema.statics.findShoeByCatId = function (catId) {
+  return ShoeModel.find({ category: catId });
+}
+
 shoeSchema.statics.findShoeById = function (id) {
   return ShoeModel.findById(id)
     .populate({ path: 'category' })

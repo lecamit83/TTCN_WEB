@@ -34,7 +34,6 @@ router.post('/images', AuthMiddleWare.isAdmin, uploads.array('shoeImages'), Shoe
 
 router.route('/:shoeId')
   .get(ShoeController.getOne)
-  .put()
-  .delete();
+  .put();
 
 module.exports = router;

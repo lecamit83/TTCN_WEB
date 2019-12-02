@@ -2,6 +2,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+
 const cors = require('cors');
 const swaggerUI = require('swagger-ui-express');
 const swaggerDocument = require('./docs.json');
@@ -22,7 +23,7 @@ app.use(cookieParser());
 app.use(cors());
 app.use(express.static(path.join(__dirname, '/')));
 
-app.use('/v1', indexRouter);
+app.use('/api', indexRouter);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 module.exports = app;
