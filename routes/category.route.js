@@ -6,7 +6,7 @@ const { AuthMiddleWare } = require('../middlewares');
 
 router.route('/')
   .get(CategoryController.getAll)
-  .post(AuthMiddleWare.isAdmin, CategoryController.create);
+  .post(CategoryController.create);
 
 router.route("/:id")
   .put(AuthMiddleWare.isAdmin, CategoryController.updateOneById)
