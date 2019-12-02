@@ -2,7 +2,7 @@ const { ColorDAO } = require('../models');
 const create = async (name) => {
   try {
     //validate here
-    const result = await ColorDAO.create({name});
+    const result = await ColorDAO.create({ name });
     return result;
   } catch (error) {
     throw error;
