@@ -19,10 +19,10 @@ const shoeSchema = new Schema({
     type: Number,
     required: true,
   },
-  images: String,
+  image: String,
   category: { type: Schema.Types.ObjectId, ref: 'Categories' },
-  size: { type: Schema.Types.ObjectId, ref: 'Sizes' },
-  color: { type: Schema.Types.ObjectId, ref: 'Colors' },
+  sizes: [{ type: Schema.Types.ObjectId, ref: 'Sizes' }],
+  colors: [{ type: Schema.Types.ObjectId, ref: 'Colors' }],
   kind: {
     type: String,
     enum: ['men', 'women']
@@ -35,10 +35,10 @@ shoeSchema.statics.findShoe = function ({ kind, q }) {
   let query = {};
   if (!!kind) query['kind'] = kind;
   if (!!q) query['slug'] = { $regex: new RegExp(q, 'gi') };
-  return this.find(query)
+  return ShoeModel.find(query)
     .populate({ path: 'category' })
-    .populate({ path: 'size' })
-    .populate({ path: 'color' })
+    .populate({ path: 'sizes' })
+    .populate({ path: 'colors' })
     .exec();
 }
 
@@ -49,8 +49,8 @@ shoeSchema.statics.findShoeByCatId = function (catId) {
 shoeSchema.statics.findShoeById = function (id) {
   return ShoeModel.findById(id)
     .populate({ path: 'category' })
-    .populate({ path: 'size' })
-    .populate({ path: 'color' })
+    .populate({ path: 'sizes' })
+    .populate({ path: 'colors' })
     .exec();
 }
 
