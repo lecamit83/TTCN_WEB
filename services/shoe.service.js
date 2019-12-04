@@ -40,9 +40,9 @@ const getShoesByCatId = async (catId) => {
   }
 }
 
-const create = (name, price, desc, category, sizes, colors, kind, images) => {
+const create = (name, price, desc, category, sizes, colors, kind, image) => {
   const slug = slugify(name, { lower: true });
-  return ShoeDAO.create({ name, price, desc, category, sizes, colors, kind, slug, images });
+  return ShoeDAO.create({ name, price, desc, category, sizes, colors, kind, slug, image });
 }
 const getAll = ({ kind, q }) => {
   return ShoeDAO.findShoe({ kind, q });

@@ -5,9 +5,9 @@ const updateOneById = async (req, res) => {
 }
 
 const create = async (req, res) => {
-  const { name, price, category, desc, size, color, kind, images } = req.body;
+  const { name, price, category, desc, size, color, kind, image } = req.body;
   try {
-    const result = await ShoeService.create(name, price, desc, category, size, color, kind, images);
+    const result = await ShoeService.create(name, price, desc, category, size, color, kind, image);
     res.status(201).json(result);
   } catch (error) {
     res.status(404).json(error);
